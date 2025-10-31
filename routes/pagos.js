@@ -8,7 +8,7 @@ const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '.');
 router.post("/crear-sesion", async (req, res, next) => {
   try {
-    console.log("🔔 Recibiendo solicitud de pago...");
+    console.log("🔔 Recibiendo solicitud de pago.....");
     console.log("Body recibido:", JSON.stringify(req.body, null, 2));
 
     const { items, success_url, cancel_url } = req.body;
