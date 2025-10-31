@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3001'],
+  origin: ['http://localhost:5173', 'http://localhost:3001', 'https://localhost:5173', 'https://euphonious-quokka-d74652.netlify.app/'],
   credentials: true
 }));
 
