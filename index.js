@@ -3,17 +3,28 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import productosRouter from "./routes/productos.js";
-import pagosRouter from "./routes/pagos.js"; // ← Nueva línea
+import pagosRouter from "./routes/pagos.js";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
 
 dotenv.config();
 
 const app = express();
 
+// SOLUCIÓN TEMPORAL: CORS más permisivo
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3001'],
-  credentials: true
+  origin: "*", // ← Permitir TODOS los orígenes temporalmente
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
+
+// También agregar headers manualmente por si acaso
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 app.use(express.json());
 
@@ -24,7 +35,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Rutas
 app.use("/api/productos", productosRouter);
-app.use("/api/pagos", pagosRouter); // ← Nueva línea
+app.use("/api/pagos", pagosRouter);
 
 // Ruta base
 app.get("/", (req, res) => {
