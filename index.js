@@ -10,22 +10,21 @@ dotenv.config();
 
 const app = express();
 
-// Configurar CORS para permitir Netlify y otros orígenes
+// SOLUCIÓN TEMPORAL: CORS más permisivo
 app.use(cors({
-  origin: [
-    'http://localhost:5173',                    // Desarrollo local
-    'http://localhost:3000',                    // Desarrollo local alternativo
-    'https://localhost:5173',                   // HTTPS local
-    'https://euphonious-quokka-d74652.netlify.app', // Tu dominio de Netlify
-    'https://*.netlify.app'                     // Cualquier subdominio de Netlify
-  ],
+  origin: "*", // ← Permitir TODOS los orígenes temporalmente
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 
-// Middleware para pre-flight requests
-app.options('*', cors());
+// También agregar headers manualmente por si acaso
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 app.use(express.json());
 
