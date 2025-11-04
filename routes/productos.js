@@ -3,7 +3,6 @@ import Producto from "../models/producto.js";
 import { AppError, NotFoundError, ValidationError, DatabaseError } from "../middleware/errorHandler.js";
 
 const router = express.Router();
-
 // GET todos los productos
 router.get("/", async (req, res, next) => {
   try {
@@ -41,7 +40,6 @@ router.post("/", async (req, res, next) => {
   try {
     const { nombre, descripcion, precio, categoria, stock } = req.body;
 
-    // Validaciones básicas
     if (!nombre || !descripcion || !precio || !categoria || !stock) {
       return next(new ValidationError('Todos los campos son obligatorios'));
     }
